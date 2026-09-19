@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}- Settings{% endblock %}
+{% block body %}
+<div class="card" style="max-width:640px;">
+  <h3 style="margin-top:0;">Settings <span class="meta">({{ tier }} plan)</span></h3>
+  {% if msg %}<div class="okmsg">{{ msg }}</div>{% endif %}
+  <form method="post">
+    <label>LLM endpoint (OpenAI-compatible base URL) — your key, your cost (~$1–3/mo)</label>
+    <input type="text" name="llm_endpoint" value="{{ vals['llm_endpoint'] }}" placeholder="https://api.openai.com/v1">
+    <label>Model</label>
+    <input type="text" name="llm_model" value="{{ vals['llm_model'] }}">
+    <label>LLM API key (stored server-side, never displayed or logged)</label>
+    <input type="password" name="llm_api_key" value="{{ vals['llm_api_key'] }}" placeholder="sk-…">
+    <p class="meta">Without a key, scoring + drafts use a transparent keyword heuristic fallback.</p>
+    <label>Poll interval (minutes)</label>
+    <input type="number" name="poll_interval" value="{{ vals['poll_interval'] }}" min="10">
+    <label>Digest email address</label>
+    <input type="text" name="digest_email" value="{{ vals['digest_email'] }}" placeholder="you@example.com">
+    <div style="margin-top:16px;"><button class="btn" type="submit">Save</button></div>
+  </form>
+</div>
+{% endblock %}

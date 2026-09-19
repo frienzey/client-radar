@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}- Activate{% endblock %}
+{% block body %}
+<div class="card" style="max-width:480px;margin:40px auto;">
+  <h2 style="margin-top:0;">Activate Client Radar</h2>
+  <p class="meta">Enter the license key from your Gumroad receipt email.</p>
+  {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  <form method="post">
+    <label>License key</label>
+    <input type="text" name="key" placeholder="CR-G-XXXXXXXXXXXX-XXXXXX" autocomplete="off">
+    <div style="margin-top:14px;"><button class="btn" type="submit">Activate</button></div>
+  </form>
+</div>
+{% endblock %}

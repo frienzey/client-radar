@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}- Digest{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="row" style="justify-content:space-between;">
+    <h3 style="margin:0;">Daily digest <span class="meta">— top mentions, last 24h, score 5+</span></h3>
+    <form method="post"><button class="btn ghost" type="submit">✉ Send email digest</button></form>
+  </div>
+  {% if msg %}<div class="okmsg" style="margin-top:12px;">{{ msg }}</div>{% endif %}
+</div>
+<div class="card">
+  {% for m in rows %}
+  <div class="mention">
+    <span class="pill {{ 's-hot' if m['score']>=7 else 's-warm' }}">{{ m['score'] }}/10</span>
+    <strong>{{ m['title'] or '(comment)' }}</strong>
+    <div class="meta">{{ m['source'] }} · u/{{ m['author'] }} · keyword: {{ m['keyword'] }}</div>
+    <div class="meta" style="margin-top:6px;">{{ m['rationale'] }}</div>
+    <div><a href="{{ m['url'] }}" target="_blank">View thread →</a></div>
+    {% if m['draft'] %}<div class="draft"><b>Outreach draft:</b><br>{{ m['draft'] }}</div>{% endif %}
+  </div>
+  {% else %}
+  <p class="meta">No qualifying mentions in the last 24h.</p>
+  {% endfor %}
+</div>
+{% endblock %}

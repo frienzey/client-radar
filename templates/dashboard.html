@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}- Dashboard{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="row" style="justify-content:space-between;">
+    <div><span class="pill s-ok">{{ tier|upper }}</span>
+      <span class="meta" style="margin-left:8px;">{{ info.keywords }} keyword slots · ${{ info.price }} plan</span></div>
+    <form method="post" action="/api/poll" onsubmit="fetch('/api/poll',{method:'POST'});return false;">
+      <button class="btn ghost" type="submit">↻ Scan now</button>
+    </form>
+  </div>
+</div>
+<div class="card stats">
+  <div class="stat"><div class="n">{{ total }}</div><div class="l">Mentions tracked</div></div>
+  <div class="stat"><div class="n">{{ high }}</div><div class="l">Hot leads (7d)</div></div>
+  <div class="stat"><div class="n">{{ avg }}</div><div class="l">Avg intent score</div></div>
+  <div class="stat"><div class="n">{{ kw_count }}/{{ info.keywords }}</div><div class="l">Keywords used</div></div>
+</div>
+<div class="card">
+  <h3 style="margin-top:0;">Latest mentions</h3>
+  {% for m in recent %}
+  <div class="mention">
+    <span class="pill {{ 's-hot' if m['score']>=7 else 's-warm' if m['score']>=4 else 's-mut' }}">{{ m['score'] }}/10</span>
+    <strong>{{ m['title'] or '(comment)' }}</strong>
+    <div class="meta">{{ m['source'] }} · u/{{ m['author'] }} · keyword: {{ m['keyword'] }} · {{ m['scored_by'] }}</div>
+    <div class="meta" style="margin-top:6px;">{{ m['rationale'] }}</div>
+    <div><a href="{{ m['url'] }}" target="_blank">View thread →</a></div>
+    {% if m['draft'] %}<div class="draft"><b>Outreach draft:</b><br>{{ m['draft'] }}</div>{% endif %}
+  </div>
+  {% else %}
+  <p class="meta">No mentions yet. Add keywords, then hit "Scan now".</p>
+  {% endfor %}
+</div>
+{% endblock %}

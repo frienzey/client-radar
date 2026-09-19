@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}- Mentions{% endblock %}
+{% block body %}
+<div class="card">
+  <form method="get" class="row">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search mentions…" style="flex:1;">
+    <select name="min_score" style="width:150px;">
+      <option value="0" {{ 'selected' if min_score==0 }}>Any score</option>
+      <option value="4" {{ 'selected' if min_score==4 }}>4+ warm</option>
+      <option value="7" {{ 'selected' if min_score==7 }}>7+ hot only</option>
+    </select>
+    <button class="btn" type="submit">Filter</button>
+  </form>
+</div>
+<div class="card">
+  <h3 style="margin-top:0;">{{ rows|length }} mentions</h3>
+  {% for m in rows %}
+  <div class="mention">
+    <span class="pill {{ 's-hot' if m['score']>=7 else 's-warm' if m['score']>=4 else 's-mut' }}">{{ m['score'] }}/10</span>
+    <strong>{{ m['title'] or '(comment)' }}</strong>
+    <div class="meta">{{ m['source'] }} · u/{{ m['author'] }} · keyword: {{ m['keyword'] }} · {{ m['scored_by'] }}</div>
+    {% if m['body'] %}<p style="font-size:14px;">{{ m['body'][:400] }}{% if m['body']|length>400 %}…{% endif %}</p>{% endif %}
+    <div class="meta">{{ m['rationale'] }}</div>
+    <div><a href="{{ m['url'] }}" target="_blank">View thread →</a></div>
+    {% if m['draft'] %}<div class="draft"><b>Outreach draft:</b><br>{{ m['draft'] }}</div>{% endif %}
+  </div>
+  {% else %}
+  <p class="meta">Nothing matches.</p>
+  {% endfor %}
+</div>
+{% endblock %}

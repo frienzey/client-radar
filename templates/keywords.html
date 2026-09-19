@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}- Keywords{% endblock %}
+{% block body %}
+<div class="card">
+  <h3 style="margin-top:0;">Tracked keywords <span class="meta">({{ kws|length }}/{{ info.keywords }} on {{ tier }})</span></h3>
+  {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  <form method="post" class="row">
+    <input type="text" name="text" placeholder="e.g. looking for a logo designer" style="flex:1;">
+    <button class="btn" type="submit">Add</button>
+  </form>
+  <div style="margin-top:14px;">
+  {% for k in kws %}
+    <div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);">
+      <span><b>{{ k['text'] }}</b> <span class="meta">added {{ k['created_at'][:10] }}</span></span>
+      <form method="post" action="/keywords/delete/{{ k['id'] }}"><button class="btn danger" type="submit">Remove</button></form>
+    </div>
+  {% else %}
+    <p class="meta">No keywords yet.</p>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}
